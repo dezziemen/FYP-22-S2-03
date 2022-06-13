@@ -4,7 +4,7 @@ from finance import CompanyStock
 from pandas import DataFrame, Series
 
 
-class MyTestCase(unittest.TestCase):
+class CompanyStockTest(unittest.TestCase):
     test_ticker = 'AAPL'
     company = CompanyStock(test_ticker)
 
@@ -29,6 +29,7 @@ class MyTestCase(unittest.TestCase):
     def test_set_start_date(self):
         start_date = datetime.datetime.now().replace(datetime.datetime.now().year - 2)
         self.company.set_start_date(start_date)
+
 
 if __name__ == '__main__':
     unittest.main()

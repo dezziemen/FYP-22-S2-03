@@ -1,5 +1,6 @@
 import yfinance as yf
 import datetime
+import matplotlib.pyplot as plt
 
 
 def get_default_start_date():
@@ -23,16 +24,22 @@ class CompanyStock:
             self.end_date = datetime.datetime.now()
 
     def get_symbol(self):
-        return self.__str__()
+        return self.company.info.get('symbol')
 
-    def get_history(self, *, start_date=None, end_date=None):
+    def get_info(self, name):
+        return self.company.info.get(name)
+
+    def get_history(self, *, start_date=None, end_date=None, interval=None):
         if start_date is None:
             start_date = self.start_date
 
         if end_date is None:
             end_date = self.end_date
 
-        history = self.company.history(start=start_date, end=end_date)
+        if interval is None:
+            interval = '1d'
+
+        history = self.company.history(start=start_date, end=end_date, interval=interval)
         return history
 
     def get_item(self, item, *, start_date=None, end_date=None):
@@ -60,6 +67,9 @@ class CompanyStock:
     def get_dividends(self, *, start_date=None, end_date=None):
         return self.get_item('Dividends', start_date=start_date, end_date=end_date)
 
+    def get_news(self):
+        return self.company.news
+
     def set_start_date(self, start_date):
         self.start_date = start_date
 
@@ -71,16 +81,17 @@ class CompanyStock:
 
 
 # Test
-if __name__ == '__main__':
-    symbol = input('Enter ticker symbol: ')
-    company = CompanyStock(symbol)
-    print(company)
-    print(company.get_symbol())
-    company_history = company.get_history()
-    print(company_history.head())
-    print(company_history.tail())
-    print(company.get_open())
-    print(company.get_high())
-    print(company.get_low())
-    print(company.get_close())
-    print(company.get_dividends())
+# if __name__ == '__main__':
+#     symbol = input('Enter ticker symbol: ')
+#     company = CompanyStock(symbol)
+#     print(company)
+#     print(company.get_news())
+    # print(company.get_symbol())
+    # company_history = company.get_history()
+    # print(company_history.head())
+    # print(company_history.tail())
+    # print(company.get_open())
+    # print(company.get_high())
+    # print(company.get_low())
+    # print(close := company.get_close())
+    # print(company.get_dividends())
